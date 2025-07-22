@@ -1,9 +1,10 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');               // 🛡️ secure headers
-const morgan = require('morgan');               // 📜 request logging
+const helmet = require('helmet'); // 🛡️ secure headers
+const morgan = require('morgan'); // 📜 request logging
 const rateLimit = require('express-rate-limit'); // ⏱️ rate limiter
-// const xss = require('xss-clean');            // ❌ removed to prevent crash
+// const xss = require('xss-clean'); // ❌ removed to prevent crash
 const pool = require('./db');
 
 const shopRoutes = require('./routes/shopRoutes');
@@ -18,16 +19,17 @@ const app = express();
 app.use(helmet());
 app.use(morgan('dev'));
 
-// ✅ CORS updated to allow frontend
+// ✅ FIXED CORS CONFIG
 app.use(
   cors({
     origin: 'https://loyal-locks.netlify.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
 );
 
 app.use(express.json());
-// app.use(xss());                               // ❌ removed to prevent crash
+// app.use(xss()); // ❌ removed to prevent crash
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 min
