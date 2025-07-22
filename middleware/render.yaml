@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: shop-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        value: your_postgresql_connection_string
+      - key: JWT_SECRET
+        value: your_jwt_secret_key
