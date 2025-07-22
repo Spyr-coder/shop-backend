@@ -17,7 +17,15 @@ const app = express();
 // ── global middleware ─────────────────────────────
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(cors());
+
+// ✅ CORS updated to allow frontend
+app.use(
+  cors({
+    origin: 'https://loyal-locks.netlify.app',
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 // app.use(xss());                               // ❌ removed to prevent crash
 
