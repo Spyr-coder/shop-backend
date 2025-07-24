@@ -1,4 +1,4 @@
-// server.js ✅ FINAL SAFE FALLBACK VERSION
+// server.js ✅ FINAL LIVE VERSION
 
 const express = require('express');
 const cors = require('cors');
@@ -26,27 +26,15 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ Fallback critical routes (no dynamic param!)
-app.post('/api/shops/register', (req, res) => {
-  console.log('Register fallback hit:', req.body);
-  res.json({ message: '✅ Register fallback OK' });
-});
-
-app.post('/api/shops/login', (req, res) => {
-  console.log('Login fallback hit:', req.body);
-  res.json({ message: '✅ Login fallback OK' });
-});
-
-// ✅ Comment out broken routers until found!
-/*
+// ✅ ACTUAL ROUTER — not fallback!
 const shopRoutes = require('./routes/shopRoutes');
 app.use('/api/shops', shopRoutes);
 
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
-*/
+// ✅ Add other routers as needed
+// const authRoutes = require('./routes/authRoutes');
+// app.use('/api/auth', authRoutes);
 
-app.get('/', (_req, res) => res.send('API Running ✅ SAFE FALLBACK'));
+app.get('/', (_req, res) => res.send('API Running ✅ LIVE'));
 
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 5000;
