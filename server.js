@@ -1,4 +1,4 @@
-// server.js ✅ FINAL LIVE VERSION
+// server.js ✅ FINAL LIVE VERSION — FIXED
 
 const express = require('express');
 const cors = require('cors');
@@ -26,11 +26,17 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ ACTUAL ROUTER — not fallback!
+// ✅ Mount actual routers
 const shopRoutes = require('./routes/shopRoutes');
 app.use('/api/shops', shopRoutes);
 
-// ✅ Add other routers as needed
+const customerRoutes = require('./routes/customerRoutes');  // ✅ FIXED: singular
+app.use('/api/customers', customerRoutes);
+
+const analyticsRoutes = require('./routes/analyticsRoutes');
+app.use('/api/analytics', analyticsRoutes);
+
+// ✅ (Optional) If you want to use the authRoutes later, uncomment:
 // const authRoutes = require('./routes/authRoutes');
 // app.use('/api/auth', authRoutes);
 
