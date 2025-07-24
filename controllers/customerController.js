@@ -1,12 +1,12 @@
 const pool = require('../db');
-const QRCode = require('qrcode'); // ✅ NEW: Import QR generator
+const QRCode = require('qrcode');
 
 // Register or increment visit
 exports.registerCustomer = async (req, res) => {
   console.log('🚀 registerCustomer triggered');
-  console.log('🔑 req.shop:', req.shop);
+  console.log('🔑 req.user:', req.user); // ✅ FIXED
 
-  const shopId = req.shop.id;
+  const shopId = req.user.id; // ✅ FIXED
   const { name, phone } = req.body;
 
   console.log('📥 Incoming customer registration:', { name, phone, shopId });
@@ -29,10 +29,10 @@ exports.registerCustomer = async (req, res) => {
       );
 
       const updatedCustomer = updated.rows[0];
-      const qr_code = await QRCode.toDataURL(updatedCustomer.phone); // ✅ NEW: QR code
+      const qr_code = await QRCode.toDataURL(updatedCustomer.phone);
 
       console.log('🔁 Visit incremented:', updatedCustomer);
-      return res.status(200).json({ ...updatedCustomer, qr_code }); // ✅ NEW: Include QR
+      return res.status(200).json({ ...updatedCustomer, qr_code });
     }
 
     const result = await pool.query(
@@ -41,10 +41,10 @@ exports.registerCustomer = async (req, res) => {
     );
 
     const newCustomer = result.rows[0];
-    const qr_code = await QRCode.toDataURL(newCustomer.phone); // ✅ NEW: QR code
+    const qr_code = await QRCode.toDataURL(newCustomer.phone);
 
     console.log('✅ Customer added:', newCustomer);
-    res.status(201).json({ ...newCustomer, qr_code }); // ✅ NEW: Include QR
+    res.status(201).json({ ...newCustomer, qr_code });
   } catch (err) {
     console.error('❌ Register Customer Error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -56,7 +56,7 @@ exports.getCustomers = async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM customers WHERE shop_id = $1',
-      [req.shop.id]
+      [req.user.id] // ✅ FIXED
     );
     console.log('📦 Customers fetched:', result.rows.length);
     res.status(200).json(result.rows);

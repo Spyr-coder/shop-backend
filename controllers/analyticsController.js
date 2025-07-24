@@ -1,8 +1,7 @@
-// controllers/analyticsController.js
 const pool = require('../db');
 
 exports.getDashboardStats = async (req, res) => {
-  const shopId = req.shop.id;
+  const shopId = req.user.id; // ✅ FIXED
 
   try {
     // 1. Total visits this month
